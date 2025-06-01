@@ -1,0 +1,35 @@
+# Etapa 1: Build
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copiamos dependencias y Prisma
+COPY package*.json prisma ./
+RUN npm install
+RUN npx prisma generate
+
+# Copiamos el resto y compilamos
+COPY . .
+RUN npm run build
+
+# Etapa 2: Producción
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --only=production
+
+# Prisma runtime y schema
+COPY --from=builder /app/node_modules/.prisma /app/node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma /app/node_modules/@prisma
+COPY --from=builder /app/prisma ./prisma
+RUN npx prisma generate
+
+# Copiamos el build
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
+
+# Debug: muestra entorno y espera antes de iniciar
+CMD sh -c 'echo 🔥 ENV: $DATABASE_URL && sleep 10 && node dist/main.js'
