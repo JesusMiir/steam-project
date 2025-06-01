@@ -6,6 +6,7 @@ on:
       - main  # o la rama principal de tu repo
     paths-ignore: 
       - 'frontend/**'
+      - '.github/workflows/front-deploy.yml'
 
 jobs:
   deploy:

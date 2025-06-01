@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main  # o la rama de producción
-    paths-ignore: 
+    paths-ignore:  # <- si hay cambios en estas carpetas, no ejecutes este workflow
       - 'backend/**'
+      - '.github/workflows/backend-deploy.yml'
 
 jobs:
   deploy-frontend:
