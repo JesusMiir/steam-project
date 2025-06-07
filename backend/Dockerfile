@@ -12,6 +12,9 @@ RUN npx prisma generate
 FROM --platform=linux/amd64 node:18-slim
 WORKDIR /app
 
+# ✅ Instalación del binario necesario
+RUN apt-get update -y && apt-get install -y openssl
+
 COPY package*.json ./
 RUN npm install --only=production
 RUN npm install prisma --no-save
