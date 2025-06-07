@@ -17,6 +17,9 @@ function Navbar() {
         <Button color="inherit" component={Link} to="/library">
           Library
         </Button>
+        <Button color="inherit" onClick={() => window.location.href = 'http://localhost:3000/auth/google'}>
+          Login con Google
+        </Button>
       </Toolbar>
     </AppBar>
   );
