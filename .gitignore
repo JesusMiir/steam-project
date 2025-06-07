@@ -1,5 +1,4 @@
 # todo lo que esta aqui va a ser ignorado de git
 backend/steam-backend-task.json
-# **/dist
 **/node_modules
 backend/.env
