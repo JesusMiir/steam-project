@@ -6,14 +6,18 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(private configService: ConfigService) {
+    const clientID = configService.get<string>('CLIENT_ID');
+    const clientSecret = configService.get<string>('CLIENT_SECRET');
+    const callbackURL = configService.get<string>('REDIRECT_URI');
+
     super({
-      clientID: configService.get<string>('CLIENT_ID'),
-      clientSecret: configService.get<string>('CLIENT_SECRET'),
-      callbackURL: configService.get<string>('REDIRECT_URI'),
+      clientID,
+      clientSecret,
+      callbackURL,
       scope: ['email', 'profile'],
     });
 
-    console.log('✅ CLIENT_ID:', configService.get<string>('CLIENT_ID')); 
+    this.configService = configService;
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
