@@ -17,14 +17,17 @@ const config_1 = require("@nestjs/config");
 let GoogleStrategy = class GoogleStrategy extends (0, passport_1.PassportStrategy)(passport_google_oauth20_1.Strategy, 'google') {
     configService;
     constructor(configService) {
+        const clientID = configService.get('CLIENT_ID');
+        const clientSecret = configService.get('CLIENT_SECRET');
+        const callbackURL = configService.get('REDIRECT_URI');
         super({
-            clientID: configService.get('CLIENT_ID'),
-            clientSecret: configService.get('CLIENT_SECRET'),
-            callbackURL: configService.get('REDIRECT_URI'),
+            clientID,
+            clientSecret,
+            callbackURL,
             scope: ['email', 'profile'],
         });
         this.configService = configService;
-        console.log('✅ CLIENT_ID:', configService.get('CLIENT_ID'));
+        this.configService = configService;
     }
     async validate(accessToken, refreshToken, profile, done) {
         const { name, emails, photos } = profile;
