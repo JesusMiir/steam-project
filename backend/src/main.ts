@@ -9,6 +9,6 @@ async function bootstrap() {
     credentials: true, // solo si usas cookies o headers con auth
   });
 
-  await app.listen(3000);
+  await app.listen(80);
 }
 bootstrap();
