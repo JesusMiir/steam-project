@@ -2,3 +2,5 @@
 backend/steam-backend-task.json
 **/node_modules
 backend/.env
+backend/dist
+frontend/dist
