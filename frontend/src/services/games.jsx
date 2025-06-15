@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://54.93.213.14';
+const API_URL = 'https://api.steam-project.es';
 
 export const getGames = () => axios.get(`${API_URL}/games`);
 export const addToCart = (userId, gameId) =>
