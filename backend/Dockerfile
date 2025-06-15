@@ -22,6 +22,6 @@ COPY --from=builder /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma /app/node_modules/@prisma
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 80
+EXPOSE 3000
 
 CMD ["sh", "-c", "npx prisma generate && node dist/src/main.js"]
