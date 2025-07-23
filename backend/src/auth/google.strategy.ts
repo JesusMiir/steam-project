@@ -1,26 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { Strategy, VerifyCallback } from "passport-google-oauth20";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
   constructor(private configService: ConfigService) {
-    const clientID = configService.get<string>('CLIENT_ID');
-    const clientSecret = configService.get<string>('CLIENT_SECRET');
-    const callbackURL = configService.get<string>('REDIRECT_URI');
-
     super({
-      clientID,
-      clientSecret,
-      callbackURL,
-      scope: ['email', 'profile'],
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.REDIRECT_URI,
+      scope: ["email", "profile"],
     });
 
     this.configService = configService;
+
+    const callbackURL = process.env.REDIRECT_URI;
+    console.log("🔁 Google redirect URI usado:", callbackURL);
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: VerifyCallback
+  ): Promise<any> {
     const { name, emails, photos } = profile;
     const user = {
       email: emails[0].value,
