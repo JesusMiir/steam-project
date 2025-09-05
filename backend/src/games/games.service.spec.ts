@@ -9,17 +9,15 @@ describe("GamesService", () => {
   // Mock mínimo de Prisma
   const prismaMock = {
     game: {
-      findMany: jest
-        .fn()
-        .mockResolvedValue([
-          {
-            id: 1,
-            title: "Half-Life",
-            price: 29.99,
-            genre: "fps",
-            description: "Classic",
-          },
-        ]),
+      findMany: jest.fn().mockResolvedValue([
+        {
+          id: 1,
+          title: "Half-Life",
+          price: 29.99,
+          genre: "fps",
+          description: "Classic",
+        },
+      ]),
       findUnique: jest.fn(),
     },
   };
