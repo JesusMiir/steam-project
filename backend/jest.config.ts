@@ -1,23 +1,33 @@
-// jest.config.ts
+// jest.config.ts (ESM)
 import type { Config } from "jest";
 
 const config: Config = {
+  preset: "ts-jest/presets/default-esm",
+  testEnvironment: "node",
+  extensionsToTreatAsEsm: [".ts"],
   roots: ["<rootDir>/src"],
   testMatch: ["**/*.spec.ts"],
-  transform: { "^.+\\.(t|j)s$": "ts-jest" },
   moduleFileExtensions: ["ts", "js", "json"],
-  testEnvironment: "node",
+  transform: {
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        useESM: true,
+        tsconfig: "<rootDir>/tsconfig.json",
+        isolatedModules: true,
+      },
+    ],
+  },
+  moduleNameMapper: {
+    "^src/(.*)$": "<rootDir>/src/$1",
+  },
   collectCoverageFrom: [
-    "src/**/*.(t|j)s",
+    "src/**/*.{ts,js}",
     "!src/main.ts",
     "!src/**/dto/**",
     "!src/**/config/**",
   ],
   coverageDirectory: "coverage",
-  // 👇 clave para que funcione import 'src/...'
-  moduleNameMapper: {
-    "^src/(.*)$": "<rootDir>/src/$1",
-  },
 };
 
 export default config;
