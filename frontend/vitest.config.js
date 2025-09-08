@@ -3,7 +3,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     environment: "jsdom",
-    setupFiles: ["./src/test/ping.spec.js"],
+    setupFiles: ["./src/test/setup.ts"], // 👈 aquí va tu archivo setup
     css: true,
     globals: true,
     coverage: {
