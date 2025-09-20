@@ -6,6 +6,11 @@
 
 // prisma/schema.prisma
 
+enum Role {
+  USER
+  ADMIN
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,18 +23,19 @@ datasource db {
 // MODELS
 
 model User {
-  id            Int         @id @default(autoincrement())
-  name          String
-  email         String      @unique
-  firstName     String?   
-  lastName      String?   
-  image         String?   
-  avatarUrl     String?
-  provider      String
-  carts         Cart[]
-  libraryItems  Library[]
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  firstName    String?
+  lastName     String?
+  image        String?
+  avatarUrl    String?
+  role         Role      @default(USER)
+  provider     String    @default("local")
+  carts        Cart[]
+  libraryItems Library[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Game {
