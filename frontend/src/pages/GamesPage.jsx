@@ -4,7 +4,7 @@ import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
 
 function GamesPage() {
   const [games, setGames] = useState([]);
-  
+
   useEffect(() => {
     getGames()
       .then((response) => {

@@ -1,10 +1,10 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth } from "../auth/AuthContext";
 
 function Navbar() {
-  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  const { user } = useAuth();   // <- NO uses useAuth0
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#1a1a1a" }}>
@@ -14,27 +14,25 @@ function Navbar() {
         </Typography>
 
         <Box sx={{ display: "flex", gap: 2 }}>
-          <Button color="inherit" component={Link} to="/games">
-            Games
-          </Button>
-          <Button color="inherit" component={Link} to="/cart">
-            Cart
-          </Button>
-          <Button color="inherit" component={Link} to="/library">
-            Library
-          </Button>
+          <Button color="inherit" component={Link} to="/games">GAMES</Button>
+          <Button color="inherit" component={Link} to="/cart">CART</Button>
+          <Button color="inherit" component={Link} to="/library">LIBRARY</Button>
         </Box>
 
         <Box sx={{ marginLeft: 2 }}>
-          {!isAuthenticated ? (
-            <Button color="inherit" onClick={() => loginWithRedirect()}>
-              Login
-            </Button>
+          {!user ? (
+            <Button color="inherit" component={Link} to="/login">LOGIN</Button>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="body1">{user?.name}</Typography>
-              <Button color="inherit" onClick={() => logout({ returnTo: window.location.origin })}>
-                Logout
+              <Typography variant="body1">{user.name ?? user.email}</Typography>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  fetch("http://localhost:3000/auth/logout", { credentials: "include" })
+                    .finally(() => window.location.replace("/"));
+                }}
+              >
+                LOGOUT
               </Button>
             </Box>
           )}
@@ -43,5 +41,4 @@ function Navbar() {
     </AppBar>
   );
 }
-
 export default Navbar;
