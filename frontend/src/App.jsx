@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import GamesPage from "./pages/GamesPage";
 import CartPage from "./pages/CartPage";
 import LibraryPage from "./pages/LibraryPage";
@@ -7,21 +7,13 @@ import LoginSuccess from "./pages/LoginSuccess";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 
-
 function App() {
-  /*
-  const token = localStorage.getItem("token");
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  console.log(payload);
-  */
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
-
         <Route path="/" element={<GamesPage />} />
         <Route path="/games" element={<GamesPage />} />
-        <Route path="/login/success" element={<LoginSuccess />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/login/success" element={<LoginSuccess />} />
 
@@ -33,6 +25,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/library"
           element={
@@ -51,8 +44,7 @@ function App() {
           }
         />
       </Routes>
-    </BrowserRouter>
-
+    </>
   );
 }
 

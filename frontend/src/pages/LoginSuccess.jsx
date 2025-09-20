@@ -1,17 +1,22 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 export default function LoginSuccess() {
-    const nav = useNavigate();
+    const [params] = useSearchParams();
     const { refreshAuth } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        (async () => {
-            await refreshAuth();           // <- carga /auth/me y guarda en contexto
-            nav("/", { replace: true });   // <- vuelve al Home
-        })();
-    }, [refreshAuth, nav]);
+        const token = params.get("token");
+        if (token) {
+            localStorage.setItem("token", token);
+            localStorage.removeItem("user");
+            refreshAuth().then(() => navigate("/"));
+        } else {
+            navigate("/login");
+        }
+    }, [params, refreshAuth, navigate]);
 
-    return <p>Logging in...</p>;
+    return <div>Iniciando sesión…</div>;
 }
