@@ -2,7 +2,8 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/renderWithProviders";
-import GameCard from "../GameCard.jsx"; // adjust path/name
+import GameCard from "../GameCard";
+import { vi } from "vitest";
 
 const sample = { id: 1, title: "Elden Ring", price: 59.99, genre: "RPG" };
 

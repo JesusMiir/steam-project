@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/renderWithProviders";
-import Button from "../Button.jsx";
+import Button from "../Button";
 
 describe("Button", () => {
     it("renders label", () => {
