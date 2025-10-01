@@ -1,9 +1,18 @@
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+// src/components/Navbar.jsx
+import { AppBar, Toolbar, Typography, Button, Box, CircularProgress } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
-function Navbar() {
-  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+export default function Navbar() {
+  const { user, role, loading, logoutLocal } = useAuth();
+  const navigate = useNavigate();
+
+  const isUser = role === "user" || role === "admin";
+  const isAdmin = role === "admin";
+
+  // --- debug temporal (borra luego) ---
+  console.debug("NAV user:", user, "role:", role, "loading:", loading);
+  // -------------------------------------
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#1a1a1a" }}>
@@ -12,35 +21,37 @@ function Navbar() {
           Steam Clone
         </Typography>
 
-        <Box sx={{ display: "flex", gap: 2 }}>
-          <Button color="inherit" component={Link} to="/games">
-            Games
-          </Button>
-          <Button color="inherit" component={Link} to="/cart">
-            Cart
-          </Button>
-          <Button color="inherit" component={Link} to="/library">
-            Library
-          </Button>
-        </Box>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <Button color="inherit" component={Link} to="/games">Games</Button>
 
-        <Box sx={{ marginLeft: 2 }}>
-          {!isAuthenticated ? (
-            <Button color="inherit" onClick={() => loginWithRedirect()}>
-              Login
-            </Button>
-          ) : (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="body1">{user?.name}</Typography>
-              <Button color="inherit" onClick={() => logout({ returnTo: window.location.origin })}>
+          {isUser && (
+            <>
+              <Button color="inherit" component={Link} to="/cart">Cart</Button>
+              <Button color="inherit" component={Link} to="/library">Library</Button>
+            </>
+          )}
+
+          {isAdmin && (
+            <Button color="inherit" component={Link} to="/admin/games">Admin</Button>
+          )}
+
+          {loading ? (
+            <CircularProgress size={18} sx={{ ml: 1 }} />
+          ) : user ? (
+            <>
+              <Typography variant="body2" sx={{ mx: 1 }}>{user.email}</Typography>
+              <Button
+                color="inherit"
+                onClick={() => { logoutLocal(); navigate("/"); }}
+              >
                 Logout
               </Button>
-            </Box>
+            </>
+          ) : (
+            <Button color="inherit" component={Link} to="/login">Login</Button>
           )}
         </Box>
       </Toolbar>
     </AppBar>
   );
 }
-
-export default Navbar;

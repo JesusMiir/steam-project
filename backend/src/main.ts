@@ -14,7 +14,7 @@ async function bootstrap() {
     credentials: true, // solo si usas cookies o headers con auth
   });
 
-  await app.listen(port);
+  await app.listen(port, "0.0.0.0");
 
   console.log(`✅ Backend running on port ${port} with CORS origin: ${origin}`);
 }
